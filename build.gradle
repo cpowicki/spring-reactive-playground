@@ -15,7 +15,11 @@ repositories {
 dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	
+	implementation platform('io.projectreactor:reactor-bom:2020.0.7')
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'io.projectreactor:reactor-core' 
+	implementation 'io.projectreactor.netty:reactor-netty'
 	
 	testCompileOnly 'org.projectlombok:lombok:1.18.20'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
