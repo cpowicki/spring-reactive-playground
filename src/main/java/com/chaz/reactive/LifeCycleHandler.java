@@ -1,11 +1,13 @@
 package com.chaz.reactive;
 
+import com.chaz.reactive.batch.BatchManager;
 import com.chaz.reactive.events.CompletedEvent;
 import com.chaz.reactive.publisher.BytePublisher;
 import com.chaz.reactive.subscriber.ByteSubscriber;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -24,13 +26,15 @@ public class LifeCycleHandler {
     ByteSubscriber secondarySubscriber;
 
     @Autowired
+    BatchManager<Byte> byteManager;
+
+    @Autowired
     ByteSubscriber subscriber;
 
     @EventListener
-    public void start(ApplicationStartedEvent ev) {
+    public void start(ApplicationReadyEvent ev) {
         log.info("Starting");
-        publisher.subscribe(subscriber);
-        publisher.subscribe(secondarySubscriber);
+        byteManager.subscribe(publisher.publisher());
     }
 
     @EventListener

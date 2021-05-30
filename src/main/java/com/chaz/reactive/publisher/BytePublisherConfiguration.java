@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 @Configuration
 public class BytePublisherConfiguration {
@@ -23,9 +22,9 @@ public class BytePublisherConfiguration {
         Byte[] data = new Byte[26];
         Arrays.setAll(data, i -> Byte.valueOf(ALPHABET[i]));
         
-        Flux<Byte> flux = Flux.fromArray(data)
-            .publishOn(Schedulers.fromExecutorService(executorService))
-            .subscribeOn(Schedulers.fromExecutorService(executorService));
+        Flux<Byte> flux = Flux.fromArray(data);
+            // .publishOn(Schedulers.fromExecutorService(executorService))
+            // .subscribeOn(Schedulers.fromExecutorService(executorService));
 
         return new BytePublisher(flux);
     }

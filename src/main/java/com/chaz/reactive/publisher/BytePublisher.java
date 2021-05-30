@@ -1,7 +1,6 @@
 package com.chaz.reactive.publisher;
 
 import org.reactivestreams.Subscriber;
-import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -13,5 +12,9 @@ public class BytePublisher {
     
     public void subscribe(Subscriber<Byte> subscriber) {
         this.producer.subscribe(subscriber);
+    }
+
+    public Flux<Byte> publisher() {
+        return this.producer;
     }
 }
