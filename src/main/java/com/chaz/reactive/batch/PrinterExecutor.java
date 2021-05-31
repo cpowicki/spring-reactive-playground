@@ -14,10 +14,6 @@ public class PrinterExecutor implements BatchExecutor<Byte> {
     @Override
     public void execute(List<Byte> items) {
 
-        // if (new Random().nextBoolean()) {
-        //     while (true) {}
-        // }
-
         byte[] bytes = items.stream()
             .collect(
                 Collector.of(

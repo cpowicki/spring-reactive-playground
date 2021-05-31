@@ -8,6 +8,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,7 @@ public class AsyncReader implements Reader, CompletionHandler<Integer, ByteBuffe
     AsynchronousFileChannel asyncFileChannel;
     Consumer<ByteBuffer> consumer;
 
-    @Autowired
-    ExecutorService executorService;
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public void completed(Integer result, ByteBuffer buffer) {

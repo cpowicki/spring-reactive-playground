@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -51,8 +49,6 @@ public class BatchManager<T> implements Subscriber<T> {
             Schedulers.single()
         ).subscribe(this);
         
-        this.active = true;
-        
         Executors.newSingleThreadExecutor().submit(() -> {
             
             while (active || this.batch.size() > 0) {
@@ -74,6 +70,7 @@ public class BatchManager<T> implements Subscriber<T> {
     @Override
     public void onSubscribe(Subscription s) {
         this.subscription = s;
+        this.active = true;
         this.requestItems(batchSize);
     }
 
@@ -97,17 +94,17 @@ public class BatchManager<T> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        log.info("completed");
         active = false;
         subscription.cancel();
     }
 
-    @SuppressWarnings("unchecked")
     private void sendBatch() {
         synchronized(this.batch) {
             if (this.batch.isEmpty()) return;
 
+            @SuppressWarnings("unchecked")
             List<T> batchClone = (List<T>)batch.clone();
+            
             executorService.submit(() -> executor.execute(batchClone));
             
             batch.clear();
